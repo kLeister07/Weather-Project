@@ -1,10 +1,21 @@
 const express = require("express");
 const https = require("https");
+const bodyParser = require("body-parser");
 
 const app = express()
 
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.get("/", function (req, res) {
-    const url = "https://api.openweathermap.org/data/2.5/weather?q=san antonio&units=imperial&appid=83da05372c8965aad9596538ce176806"
+  res.sendFile(__dirname + "/index.html")
+    // res.send("Server is up and running.")
+});
+
+app.post("/", function(req, res){
+    const query = req.body.cityName;
+    const apiKey = "83da05372c8965aad9596538ce176806";
+    const unit = "imperial"
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&units=" + unit + "&appid=" + apiKey;
     https.get(url, function (response) {
         console.log(response.statusCode);
         
@@ -15,21 +26,20 @@ app.get("/", function (req, res) {
             const weatherDescription = weatherData.weather[0].description;
             const icon = weatherData.weather[0].icon;
             const iconUrl ="http://openweathermap.org/img/wn/" + icon + "@2x.png";
-
+    
             console.log(icon);
-
+    
             console.log(weatherDescription);
             // res.send("The temperature in San Antonio is " + temp + " degrees Fahrenheit");
-            res.write("<h1>The temperature in San Antonio is " + temp + " degrees Fahrenheit</h1>");
+            res.write("<h1>The temperature in " + query + " is " + temp + " degrees Fahrenheit</h1>");
             res.write("<h2>The weather is currently " + weatherDescription + " .</h2>"); 
            res.write("<img src=" + iconUrl + ">");
             res.send();  
         })
-
+    
     });
-    // res.send("Server is up and running.")
-});
 
+});
 
 
 
