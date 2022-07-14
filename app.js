@@ -47,3 +47,11 @@ app.post("/", function(req, res){
 app.listen(3000, function () {
     console.log("Server is running on port 3000.")
 });
+
+
+// open weather api keys
+// 660cf05e49e3e7b6b0a72b5524759c6c
+// 83da05372c8965aad9596538ce176806
+
+//weatherapi key
+// fdcf69928b5b4aa0976194003221207
